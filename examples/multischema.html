@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Multischema JSON Editor Example</title>
+    <script src="../dist/jsoneditor.js"></script>
+  </head>
+  <body>
+    <h1>Multischema JSON Editor Example</h1>
+    
+    <p>An example of editing and validating off a schema with multiple
+    different <tt>select</tt> options with different properties.</p>
+    
+    <p>An important aspect of making the "oneOf" property with different
+    subschemas edit property is setting the option: <tt>no_additional_properties: <b>true</b></b></tt>
+    
+    <div id='editor_holder'></div>
+    <button id='submit'>Submit (console.log)</button>
+    
+    <script>
+      // Initialize the editor with a JSON schema
+      var editor = new JSONEditor(document.getElementById('editor_holder'),{
+          no_additional_properties: true,
+          schema: {
+                    title: "Assignment",
+                    type: "object",
+                    definitions: {
+                       "cat": {
+                           type: "object",
+                           title: "cat",                           
+                           properties: {
+                               select_type: {
+                                   type: "string",
+                                   options: {
+                                       hidden: true,                                       
+                                   }
+                               },
+                               hair: {
+                                   required: false,
+                                   type: "string",
+                                   default: "short",
+                                   enum: ["short", "long"]
+                               },
+                           }
+                       },
+                       "dog": {
+                           type: "object",
+                           title: "dog",
+                           properties: {
+                               select_type: {
+                                   type: "string",
+                                   options: {
+                                       hidden: true,                                       
+                                   }
+                               },
+                               slobbers: {
+                                   type: "boolean",
+                                   default: true,
+                                   enum: [true, false]
+                               }
+                           }                   
+                       },
+                       "bird": {
+                         type: "object",
+                         title: "bird",
+                         properties: {
+                             select_type: {
+                                 type: "string",
+                                 options: {
+                                     hidden: true,                                       
+                                 }
+                             },
+                             chirps: {
+                                 type: "boolean",
+                                 default: true,
+                                 enum: [true, false]
+                             }
+                         }                   
+                     }
+                    },
+                    
+                    
+                    properties: {
+                        sections: {
+                                title: "Sections",
+                                type: "array",
+                                format: "tabs",
+                                minitems: 1,
+                                items: {
+                                    "oneOf": [  
+                                        {"title": "cat",
+                                         "$ref": "#/definitions/cat"},
+                                        {"title": "dog",
+                                         "$ref": "#/definitions/dog"},
+                                        {"title": "bird",
+                                         "$ref": "#/definitions/bird"}  
+                                    ],
+                                    default: {},
+                                }                    
+                          },
+                    }
+        
+        }
+      });
+      
+      // Hook up the submit button to log to the console
+      document.getElementById('submit').addEventListener('click',function() {
+        // Get the value from the editor
+        console.log(JSON.stringify(editor.getValue()));
+      });
+    </script>
+  </body>
+</html>

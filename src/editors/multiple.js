@@ -55,7 +55,6 @@ JSONEditor.defaults.editors.multiple = JSONEditor.AbstractEditor.extend({
     self.register();
 
     var current_value = self.getValue();
-
     $each(self.editors,function(type,editor) {
       if(!editor) return;
       if(self.type === type) {
@@ -221,6 +220,9 @@ JSONEditor.defaults.editors.multiple = JSONEditor.AbstractEditor.extend({
   },
   refreshValue: function() {
     this.value = this.editors[this.type].getValue();
+    if (this.value.hasOwnProperty('select_type')) {
+        this.value.select_type = this.types[this.type].title;
+    }
   },
   setValue: function(val,initial) {
     // Determine type by getting the first one that validates
