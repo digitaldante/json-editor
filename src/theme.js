@@ -106,11 +106,11 @@ JSONEditor.AbstractTheme = Class.extend({
   },
   getSwitcher: function(options) {
     var switcher = this.getSelectInput(options);
-    switcher.style.backgroundColor = 'transparent';
-    switcher.style.height = 'auto';
+    // switcher.style.backgroundColor = 'transparent';
+    // switcher.style.height = 'auto';
     switcher.style.fontStyle = 'italic';
-    switcher.style.fontWeight = 'normal';
-    switcher.style.padding = '0 0 0 3px';
+    // switcher.style.fontWeight = 'normal';
+    // switcher.style.padding = '0 0 0 3px';
     return switcher;
   },
   getSwitcherOptions: function(switcher) {
@@ -133,7 +133,7 @@ JSONEditor.AbstractTheme = Class.extend({
     var el = document.createElement('textarea');
     el.style = el.style || {};
     el.style.width = '100%';
-    el.style.height = '300px';
+    el.style.height = '400px';
     el.style.boxSizing = 'border-box';
     return el;
   },

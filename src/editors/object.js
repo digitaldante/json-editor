@@ -1,6 +1,6 @@
 JSONEditor.defaults.editors.object = JSONEditor.AbstractEditor.extend({
   getDefault: function() {
-    return $extend({},this.schema.default || {});
+    return $extend({},this.schema['default'] || {});
   },
   getChildEditors: function() {
     return this.editors;
@@ -68,12 +68,13 @@ JSONEditor.defaults.editors.object = JSONEditor.AbstractEditor.extend({
     });
     
     var container;
-    
+    var griddedRows = []; // keep track of which rows were put in a grid.
     if(this.format === 'grid') {
       var rows = [];
       $each(this.property_order, function(j,key) {
         var editor = self.editors[key];
         if(editor.property_removed) return;
+        griddedRows.push(j);
         var found = false;
         var width = editor.options.hidden? 0 : editor.getNumColumns();
         var height = editor.options.hidden? 0 : editor.container.offsetHeight;
@@ -87,6 +88,9 @@ JSONEditor.defaults.editors.object = JSONEditor.AbstractEditor.extend({
               found = i;
             }
           }
+        }
+        if(editor.options.skipGrid) {
+          found = false;
         }
         
         // If there isn't a spot in any of the existing rows, start a new row
@@ -107,6 +111,9 @@ JSONEditor.defaults.editors.object = JSONEditor.AbstractEditor.extend({
           height: height
         });
         rows[found].width += width;
+        if(editor.options.skipGrid) {
+            rows[found].width = 12;
+        }
         rows[found].minh = Math.min(rows[found].minh,height);
         rows[found].maxh = Math.max(rows[found].maxh,height);
       });
@@ -150,6 +157,7 @@ JSONEditor.defaults.editors.object = JSONEditor.AbstractEditor.extend({
           row.appendChild(editor.container);
         }
       }
+      //window.console.log(griddedRows);
     }
     // Normal layout
     else {
